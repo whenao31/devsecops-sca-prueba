@@ -9,7 +9,6 @@ class ResulViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         serializer = self.get_serializer(self.get_queryset(), many =True)
-        print(serializer.data)
         return Response(serializer.data)
     
     def create(self, request):
