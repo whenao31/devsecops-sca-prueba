@@ -3,7 +3,7 @@ from djongo import models
 
 
 class Vulnerability(models.Model):
-    osv_url = models.TextField()
+    osv_url = models.TextField(primary_key=True)
     cvss = models.CharField(max_length=4)
     ecosystem = models.CharField(max_length=100)
     package = models.CharField(max_length=100)
@@ -14,7 +14,7 @@ class Vulnerability(models.Model):
         return self.osv_url
     
     class Meta:
-        abstract = True
+        managed = False
 
 class Result(models.Model):
     vulnerabilities = models.ArrayField(
