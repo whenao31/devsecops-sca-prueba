@@ -1,0 +1,31 @@
+version: '3.3'
+
+# Usage:
+#   docker stack deploy -c stack.yml mongo
+# or 
+#   docker-compose -f stack.yml up
+
+services:
+
+  mongo:
+    container_name: mongo-lab-docker
+    build: .
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
+      MONGO_INITDB_DATABASE: vmp_db
+    ports:
+      - "27017:27017"
+    volumes:
+      # - ./db_mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - db-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+  
+volumes:
+  db-data:
