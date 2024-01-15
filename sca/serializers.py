@@ -1,19 +1,13 @@
 from rest_framework import serializers
-from sca.models import Result
+from sca.models import Result, Vulnerability
 
-class VulBaseSerializer(serializers.Serializer):
-    osv_url = serializers.CharField()
-    cvss = serializers.CharField()
-    ecosystem = serializers.CharField()
-    package = serializers.CharField()
-    version = serializers.CharField()
-    source = serializers.CharField()
-
+class VulnerabilitySerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['osv_url', 'cvss', 'ecosystem', 'package', 'version', 'source']
+        model = Vulnerability
+        fields = '__all__'
 
 class ResultSerializer(serializers.ModelSerializer):
-    vulnerabilities = VulBaseSerializer(many=True)
+    vulnerabilities = VulnerabilitySerializer(many=True)
     
     class Meta:
         model = Result  
