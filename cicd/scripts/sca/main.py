@@ -19,20 +19,21 @@ def main(argv):
     with open('sca_result.md', "r") as file:
         head, tail = file.read().split('\n', 1)
   
+    # Check whether there's a Table of Results to be sent to the SCA service API
     if tail.find("OSV URL") != -1:
         with open('sca_result.md', "w") as fout:
             fout.write(tail)
+    
+        # Parse data to send to Vulnerability Management Platform(VMP)
+        data  = parse_markdowntable_to_json('sca_result.md', execution_id=ci_exec_id,
+                                        git_branch=git_branch, git_user=git_user
+                )
+        
+        # POST Request of the SCA results to the SCA service at VMP
+        post_sca_result(sca_api_url, data)
     else:
         print('\n*** SCA Result Warn ***')
         print(head, '\n', tail)
-    
-    # Parse data to send to Vulnerability Management Platform(VMP)
-    data  = parse_markdowntable_to_json('sca_result.md', execution_id=ci_exec_id,
-                                       git_branch=git_branch, git_user=git_user
-            )
-    
-    # POST Request of the SCA results to the SCA service at VMP
-    post_sca_result(sca_api_url, data)
     
     
 
