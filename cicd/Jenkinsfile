@@ -18,7 +18,7 @@ pipeline {
             }
 
             steps {
-                sh 'docker run -it -v ${{PWD}}:/src ghcr.io/google/osv-scanner --format markdown -L /src/requirements.txt > sca_result.md'
+                sh 'docker run -it -v ${PWD}:/src ghcr.io/google/osv-scanner --format markdown -L /src/requirements.txt > sca_result.md'
                 sh 'pip install requests'
                 sh '''python3 cicd/scripts/sca/main.py -L requirements.txt \
 	                            -i ${GIT_COMMIT} \
