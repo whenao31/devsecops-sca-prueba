@@ -18,11 +18,12 @@ pipeline {
                 sh 'pip install requests'
                 sh 'echo ${GIT_COMMIT}'
                 sh 'echo ${GIT_BRANCH}'
-                sh 'echo ${GIT_AUTHOR_EMAIL}'
+                sh 'echo ${GIT_COMMITTER_EMAIL}'
+                sh 'echo ${GIT_COMMITTER_NAME}'
                 sh 'echo ${SCA_API_URL}'
                 sh '''python cicd/scripts/sca/main.py -L requirements.txt \
-	                            -i ${env.GIT_COMMIT} \
-	                            -b ${env.GIT_BRANCH} -u ${env.GIT_AUTHOR_EMAIL} \
+	                            -i ${GIT_COMMIT} \
+	                            -b ${GIT_BRANCH} -u ${env.GIT_AUTHOR_EMAIL} \
 	                            -a $SCA_API_URL \
 	                            -t $SCA_API_TOKEN
                 '''
