@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 from .serializers import ResultSerializer
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Result
 
 # class ResulViewSet(viewsets.ModelViewSet):
@@ -27,6 +29,7 @@ from .models import Result
 
 #         return Response(serializer.data, status=201)
 
+#--------------- API Views---------------
 
 class ResultListView(ListCreateAPIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
@@ -42,4 +45,20 @@ class ResultDetailView(RetrieveUpdateDestroyAPIView):
 
     serializer_class = ResultSerializer
     queryset = Result.objects.all()
+
+#--------------- API Views END---------------    
+
+#--------------- Template Views---------------
     
+def result_detail(request, pk):
+    result = get_object_or_404(Result, pk=pk)
+    context = {
+        'result': result,
+    }
+    return render(request, 'result_detail.html', context)
+
+def mark_as_remediated(request, pk):
+    result = get_object_or_404(Result, pk=pk)
+    result.is_remediated = not (result.is_remediated)
+    result.save()
+    return redirect(f'/results/{pk}/')
