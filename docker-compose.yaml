@@ -5,9 +5,11 @@ services:
     build: ./db_mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: mongoadmin
-      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
-      MONGO_INITDB_DATABASE: vmp_db
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PWD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    # env_file: 
+    #   - .env
     ports:
       - "27017:27017"
     volumes:
@@ -28,10 +30,6 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     env_file: 
       - .env
     extra_hosts:

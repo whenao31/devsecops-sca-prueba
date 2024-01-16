@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-import environ
+import environ, os
 
 from pathlib import Path
 
@@ -98,10 +98,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
-            'host': env('MONGO_DB_HOST'),
-            'port': int(env('MONGO_DB_PORT')),
-            'username': env('MONGO_DB_USER'),
-            'password': env('MONGO_DB_PWD'),            
+            'host': os.getenv('MONGO_DB_HOST'),
+            'port': int(os.getenv('MONGO_DB_PORT')),
+            'username': os.getenv('MONGO_DB_USER'),
+            'password': os.getenv('MONGO_DB_PWD'),            
             },
         'NAME': env('DB_NAME'),
     }
