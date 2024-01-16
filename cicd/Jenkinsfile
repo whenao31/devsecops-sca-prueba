@@ -3,14 +3,7 @@ pipeline {
 
     stages {
         stage('SCA Analysis') {
-            agent {
-                docker {
-                    image 'python:3.10.12-slim-bookworm'
-                    args '--network host root:root'
-                }
-                
-            }
-            // agent any
+            agent any
 
             environment {
                 SCA_API_URL = 'http://54.158.47.114:8000/api/results/'
