@@ -32,16 +32,16 @@ from .models import Result
 #--------------- API Views---------------
 
 class ResultListView(ListCreateAPIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     serializer_class = ResultSerializer
     queryset = Result.objects.all()
     pagination_class = LimitOffsetPagination
 
 class ResultDetailView(RetrieveUpdateDestroyAPIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     serializer_class = ResultSerializer
     queryset = Result.objects.all()
