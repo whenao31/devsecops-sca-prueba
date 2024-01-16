@@ -33,9 +33,21 @@ pipeline {
                     if (sca_result_lines.trim().toInteger() > 2) {
                         input message: "Continue despite SCA vulnerabilities findings?"
                     }else{
-                        sh 'echo "SCA PASSED"'
+                        sh 'echo "No SCA Findings"'
                     }
                 }
+            }
+        }
+
+        stage('Docker Image build and push') {
+            agent any
+            environment {
+                DH_TOKEN = credentials('DOCKERHUB_TOKEN')
+            }
+            steps {
+                sh 'docker build -t whenao31/sca-service:${GIT_COMMIT} .'
+                sh 'echo $DH_TOKEN_PSW | docker login -u $DH_TOKEN_USR --password-stdin'
+                sh 'docker push whenao31/sca-service:${GIT_COMMIT}'
             }
         }
     }
