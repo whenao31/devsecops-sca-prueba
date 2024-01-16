@@ -6,7 +6,7 @@ pipeline {
             agent {
                 docker {
                     image 'python:3.10.12-slim-bookworm'
-                    args '--network host'
+                    args '--network host root:root'
                 }
                 
             }
