@@ -30,7 +30,7 @@ pipeline {
                         returnStdout: true
                     )
 
-                    if (sca_result_lines > 2) {
+                    if (sca_result_lines.trim().toInteger() > 2) {
                         input message: "Continue despite SCA vulnerabilities findings?"
                     }else{
                         sh 'echo "SCA PASSED"'
