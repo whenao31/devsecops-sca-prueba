@@ -16,9 +16,9 @@ pipeline {
 
             steps {
                 sh 'pip install requests'
-                sh 'echo ${env.GIT_COMMIT}'
-                sh 'echo ${env.GIT_BRANCH}'
-                sh 'echo ${env.GIT_AUTHOR_EMAIL}'
+                sh 'echo ${GIT_COMMIT}'
+                sh 'echo ${GIT_BRANCH}'
+                sh 'echo ${GIT_AUTHOR_EMAIL}'
                 sh 'echo ${SCA_API_URL}'
                 sh '''python cicd/scripts/sca/main.py -L requirements.txt \
 	                            -i ${env.GIT_COMMIT} \
