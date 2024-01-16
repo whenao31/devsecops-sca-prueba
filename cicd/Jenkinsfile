@@ -20,5 +20,22 @@ pipeline {
                 '''
             }
         }
+
+        stage("SCA Findings alert") {
+            agent any
+            steps {
+                script {
+                    sca_result_lines =  sh(
+                        script: 'cat sca_result.md | wc -l'
+                    )
+
+                    if (sca_result_lines > 2) {
+                        input message: "Continue despite SCA vulnerabilities findings?"
+                    }else{
+                        sh 'echo "SCA PASSED"'
+                    }
+                }
+            }
+        }
     }
 }
