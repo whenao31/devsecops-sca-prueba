@@ -13,8 +13,8 @@ def main(argv):
     # Obtain all the args from command line
     lockfile, ci_exec_id, git_branch, git_user, sca_api_url, sca_api_token  = get_sca_opt(argv)
     
-    docker_sca_cmd = f'docker run -it -v ${{PWD}}:/src ghcr.io/google/osv-scanner --format markdown -L /src/{lockfile} > sca_result.md'
-    os.system(docker_sca_cmd)
+    # docker_sca_cmd = f'docker run -it -v ${{PWD}}:/src ghcr.io/google/osv-scanner --format markdown -L /src/{lockfile} > sca_result.md'
+    # os.system(docker_sca_cmd)
 
     with open('sca_result.md', "r") as file:
         head, tail = file.read().split('\n', 1)
