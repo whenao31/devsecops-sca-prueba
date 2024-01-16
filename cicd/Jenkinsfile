@@ -25,8 +25,9 @@ pipeline {
             agent any
             steps {
                 script {
-                    sca_result_lines =  sh(
-                        script: 'cat sca_result.md | wc -l'
+                    def sca_result_lines =  sh(
+                        script: 'cat sca_result.md | wc -l',
+                        returnStdout: true
                     )
 
                     if (sca_result_lines > 2) {
