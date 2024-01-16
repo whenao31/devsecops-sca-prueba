@@ -96,25 +96,12 @@
                     <th scope="col">Package</th>
                     <th scope="col">Version</th>
                     <th scope="col">Source File</th>
-                    <th scope="col">Remediated</th>
                 </thead>
                 <tbody>
                     {% for vul in result.vulnerabilities %}
                     <tr>
                         {% for key, value in vul.items %}
-                            {% if key != "is_remediated" %}
                             <td>{{ value }}</td>
-                            {% else %}
-                            <td>
-                                <div style="position: relative; left: 50%;">
-                                    <input 
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      id="checkboxNoLabel" value="" aria-label="..."
-                                      >
-                                </div>
-                            </td>
-                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}

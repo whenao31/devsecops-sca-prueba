@@ -34,12 +34,13 @@ def get_sca_opt(argv):
     git_branch      = ''
     git_user        = ''
     sca_api_url     = ''
+    sca_api_token   = ''
 
     try:
-        long_options = ["lockfile=", "ci-exec-id=", "git-branch", "git-user", "sca-api-url"]
-        opts, args = getopt.getopt(argv, "hL:i:b:u:a:", long_options)
+        long_options = ["lockfile=", "ci-exec-id=", "git-branch", "git-user", "sca-api-url", "sca-api-token"]
+        opts, args = getopt.getopt(argv, "hL:i:b:u:a:t:", long_options)
     except getopt.GetoptError:
-        print("sca.py -L [lockfile/path] -i [ci-execution-id] -b [git-branch] -u [git-user] -a [sca-api-url]")
+        print("sca.py -L [lockfile/path] -i [ci-execution-id] -b [git-branch] -u [git-user] -a [sca-api-url] -t [sca-api-token]")
         sys.exit(2)
 
     for opt, arg in opts:
@@ -56,8 +57,10 @@ def get_sca_opt(argv):
             git_user = arg
         elif opt in ('-a', "--sca-api-url"):
             sca_api_url = arg
+        elif opt in ('-t', "--sca-api-token"):
+            sca_api_token = arg
     
-    return lockfile_path, ci_exec_id, git_branch, git_user, sca_api_url
+    return lockfile_path, ci_exec_id, git_branch, git_user, sca_api_url, sca_api_token
 
 
 def parse_markdowntable_to_json(filename, **kwargs):

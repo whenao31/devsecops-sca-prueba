@@ -9,7 +9,7 @@ class Vulnerability(models.Model):
     package = models.CharField(max_length=100)
     version = models.CharField(max_length=100)
     source = models.CharField(max_length=200)
-    is_remediated = models.BooleanField(default=False)
+    # is_remediated = models.BooleanField(default=False)
 
     objects = models.DjongoManager()
 
