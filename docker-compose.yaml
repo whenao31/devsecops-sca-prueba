@@ -1,0 +1,43 @@
+services:
+
+  db:
+    container_name: mongo-docker
+    build: ./db_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
+      MONGO_INITDB_DATABASE: vmp_db
+    ports:
+      - "27017:27017"
+    volumes:
+      # - ./db_mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - db-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  sca_web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: "on-failure"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    env_file: 
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
+
+volumes:
+  db-data:
