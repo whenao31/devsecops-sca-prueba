@@ -39,6 +39,21 @@ pipeline {
             }
         }
 
+        stage('Sonar Analysis') {
+            
+            agent any
+
+            steps {                
+                withSonarQubeEnv('sonarqube') {
+                    sh '/opt/sonnar-scanner/bin/sonar-scanner \
+                            -Dsonar.organization=devsecops-sca \
+                            -Dsonar.projectKey=devsecops-sca_sca-service \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=https://sonarcloud.io'
+                }
+            }
+        }
+
         stage('Docker Image build and push') {
             agent any
             environment {
