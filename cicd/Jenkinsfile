@@ -19,7 +19,7 @@ pipeline {
 
             steps {
                 sh 'pip install requests'
-                sh '''python cicd/scripts/sca/main.py -L requirements.txt \
+                sh '''python3 cicd/scripts/sca/main.py -L requirements.txt \
 	                            -i ${GIT_COMMIT} \
 	                            -b ${GIT_BRANCH} -u usr${BUILD_NUMBER}@mail.com \
 	                            -a $SCA_API_URL \
