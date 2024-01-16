@@ -11,7 +11,7 @@ def main(argv):
     # print(os.system(rm_previous_file_cmd))
 
     # Obtain all the args from command line
-    lockfile, ci_exec_id, git_branch, git_user, sca_api_url  = get_sca_opt(argv)
+    lockfile, ci_exec_id, git_branch, git_user, sca_api_url, sca_api_token  = get_sca_opt(argv)
     
     docker_sca_cmd = f'docker run -it -v ${{PWD}}:/src ghcr.io/google/osv-scanner --format markdown -L /src/{lockfile} > sca_result.md'
     os.system(docker_sca_cmd)
@@ -30,7 +30,7 @@ def main(argv):
                 )
         
         # POST Request of the SCA results to the SCA service at VMP
-        post_sca_result(sca_api_url, data)
+        post_sca_result(sca_api_url, data, sca_api_token)
     else:
         print('\n*** SCA Result Warn ***')
         print(head, '\n', tail)
