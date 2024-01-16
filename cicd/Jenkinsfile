@@ -4,10 +4,11 @@ pipeline {
     stages {
         stage('SCA Analysis') {
             agent {
-                docker {
-                    image 'python:3.10.12-slim-bookworm'
-                    args '--network host -u root:root'
-                }
+                // docker {
+                //     image 'python:3.10.12-slim-bookworm'
+                //     args '--network host -u root:root'
+                // }
+                any
             }
             environment {
                 SCA_API_URL = 'http://54.158.47.114:8000/api/results/'
@@ -15,6 +16,7 @@ pipeline {
             }
 
             steps {
+                sh 'apt update && apt install python3-pip'
                 sh 'pip install requests'
                 sh '''python cicd/scripts/sca/main.py -L requirements.txt \
 	                            -i ${GIT_COMMIT} \
