@@ -23,30 +23,29 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div class="container" pt-5>
-            <h2>I have implemented django template</h2>
+            <h2 class="pt-5 text-center"><span class="badge rounded-pill bg-primary">Vulnerability Management Platform</span></h2>
+            <h3 class="pt-5 text-center"><span class="badge bg-secondary">SCA Analisys Results List</span></h3>
             <!-- <img src="{% static 'images/jenkins.svg' %}" alt="" width="50"> -->
             <table class="table">
-              <thead>
+              <thead class="table-light">
                 <th scope="col">#</th>
-                <th scope="col">id</th>
-                <th scope="col">CVEs Summary</th>
+                <th scope="col">Execution ID</th>
+                <th scope="col">Git User</th>
+                <th scope="col">Creation Date</th>
               </thead>
               <tbody>
                 {% for res in results %}
                 <tr>
-                  <th>1</th>
-                  <th>{{ res.execution_id }}</th>
-                  <th></th>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td> <a href="{% url 'tmp_result_detail' res.id %}">{{ res.execution_id }}</a> </td>
+                  <td>{{ res.git_user }}</td>
+                  <td>{{ res.created_at }}</td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
         </div>
 
-        {% for i in results %}
-          {{ i }}
-        {% endfor %}
-        
         <script src="" async defer></script>
     </body>
 </html>

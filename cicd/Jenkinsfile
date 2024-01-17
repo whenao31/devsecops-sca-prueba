@@ -1,0 +1,69 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('SCA Analysis') {
+            agent any
+
+            environment {
+                SCA_API_URL = 'http://54.158.47.114:8000/api/results/'
+                SCA_API_TOKEN = credentials('SCA_API_TOKEN')
+            }
+
+            steps {
+                sh 'pip install requests'
+                sh '''python3 cicd/scripts/sca/main.py -L requirements.txt \
+	                            -i ${GIT_COMMIT} \
+	                            -b ${GIT_BRANCH} -u usr${BUILD_NUMBER}@mail.com \
+	                            -a $SCA_API_URL \
+	                            -t $SCA_API_TOKEN
+                '''
+            }
+        }
+
+        stage("SCA Findings alert") {
+            agent any
+            steps {
+                script {
+                    def sca_result_lines =  sh(
+                        script: 'cat sca_result.md | wc -l',
+                        returnStdout: true
+                    )
+
+                    if (sca_result_lines.trim().toInteger() > 2) {
+                        input message: "Continue despite SCA vulnerabilities findings?"
+                    }else{
+                        sh 'echo "No SCA Findings"'
+                    }
+                }
+            }
+        }
+
+        stage('Sonar Analysis') {
+            
+            agent any
+
+            steps {                
+                withSonarQubeEnv('sonarqube') {
+                    sh '/opt/sonnar-scanner/bin/sonar-scanner \
+                            -Dsonar.organization=devsecops-sca \
+                            -Dsonar.projectKey=devsecops-sca_sca-service \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=https://sonarcloud.io'
+                }
+            }
+        }
+
+        stage('Docker Image build and push') {
+            agent any
+            environment {
+                DH_TOKEN = credentials('DOCKERHUB_TOKEN')
+            }
+            steps {
+                sh 'docker build -t whenao31/sca-service:${GIT_COMMIT} .'
+                sh 'echo $DH_TOKEN_PSW | docker login -u $DH_TOKEN_USR --password-stdin'
+                sh 'docker push whenao31/sca-service:${GIT_COMMIT}'
+            }
+        }
+    }
+}
