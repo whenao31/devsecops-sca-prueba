@@ -82,7 +82,7 @@ pipeline {
             
             steps {
                 dir('terraform/aws/resources') {
-                    sh "terraform apply -input=false tfplan"
+                    sh "terraform apply -input=false sca.tfplan"
                 }
             }
         }
