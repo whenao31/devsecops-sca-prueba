@@ -23,7 +23,8 @@ services:
       start_period: 40s
 
   sca_web:
-    build: .
+    # build: .
+    image: whenao31/sca-service:137a0a92841078d5d9e2c6bb33716103c348c9e7
     command: python manage.py runserver 0.0.0.0:8000
     restart: "on-failure"
     volumes:
