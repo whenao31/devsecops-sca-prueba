@@ -50,7 +50,7 @@ pipeline {
                     sh 'terraform init'
                     sh 'terraform workspace select ${environment} || terraform workspace new ${environment}'
 
-                    sh "terraform plan -input=false -out tfplan "
+                    sh "terraform plan -input=false -out sca.tfplan "
                     sh 'terraform show -no-color tfplan > tfplan.txt'
                 }
             }
@@ -67,7 +67,7 @@ pipeline {
            
            steps {
                script {
-                    def plan = readFile 'infrastructure/tfplan.txt'
+                    def plan = readFile 'terraform/aws/resources/tfplan.txt'
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                }
